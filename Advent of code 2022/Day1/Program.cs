@@ -1,25 +1,28 @@
 ﻿
 var input = await File.ReadAllLinesAsync("input.txt");
 
-int highest = 0;
-int current = 0;
+var elves = new List<Elf>();
+var elf = new Elf();
 
 foreach(var line in input)
 {
-
     if (string.IsNullOrWhiteSpace(line))
     {
-        if(current > highest)
-        {
-            highest = current;
-        }
-        current = 0;
+        elves.Add(elf);
+        elf = new Elf();
     } else
     {
-        current += int.Parse(line);
+        elf.Calories.Add(int.Parse(line));
     }
 }
 
-Console.WriteLine($"Highest is: {highest}");
+var ordered = elves.OrderByDescending(x => x.Calories.Sum()).ToList();
+
+Console.WriteLine($"Sum of highest 3 is: {ordered[0].Calories.Sum() + ordered[1].Calories.Sum() + ordered[2].Calories.Sum()}");
 
 Console.ReadKey();
+
+class Elf
+{
+    public List<int> Calories { get; set; } = [];
+}
